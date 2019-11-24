@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">QrScannerCerato</string>
+    <string name="scan">SCAN QR</string>
+</resources>
