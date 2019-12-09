@@ -5,16 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class WebView extends AppCompatActivity {
+
     private android.webkit.WebView web;
     private IntentIntegrator mioIntent;
 
@@ -25,8 +23,7 @@ public class WebView extends AppCompatActivity {
         web = findViewById(R.id.WebView);
 
         mioIntent = new IntentIntegrator(this); //creazione dell'oggetto IntentIntegrator
-
-        mioIntent.initiateScan();
+        mioIntent.initiateScan(); //fa partire la scansione
 
     }
 
@@ -45,16 +42,15 @@ public class WebView extends AppCompatActivity {
 
             } else { //se il qr code ha dei dati
 
-                if(mioResult.getContents().substring(0,4).equals("http")){
-                    Toast.makeText(this, mioResult.getContents().substring(0,4), Toast.LENGTH_SHORT).show();
-                    web.setWebViewClient(new WebViewClient());
-                    web.loadUrl(mioResult.getContents());
+                if(mioResult.getContents().substring(0,4).equals("http")){//se è online
+                    Toast.makeText(this, mioResult.getContents(), Toast.LENGTH_SHORT).show(); //visualizza l'URL
 
-                }else{
-                    //cerco il file in locale
-
-
+                }else{  //cerco il file in locale
+                    Toast.makeText(this, "Aperto il file in locale", Toast.LENGTH_SHORT).show();
                 }
+
+                web.setWebViewClient(new WebViewClient());
+                web.loadUrl(mioResult.getContents());
 
             }
         } else {
@@ -65,14 +61,13 @@ public class WebView extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        //if (web.copyBackForwardList().getCurrentIndex() > 0) {
+
+        if (web.canGoBack()) {
             web.goBack();
 
-       // }
-       // else {
-          //  super.onBackPressed(); // finishes activity
-         //   Toast.makeText(this, "errore backPress", Toast.LENGTH_SHORT).show();
-       // }
+       }
+       else {
+         super.onBackPressed(); // finishes activity
+       }
     }
 }
